@@ -4,6 +4,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.ProgressBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,11 +33,15 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView list;
     List<Feature> featureList;
     private EarthQuakeAPI earthQuakeAPI;
+    private ProgressBar spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        spinner = (ProgressBar)findViewById(R.id.progress_loader);
+        spinner.setVisibility(View.VISIBLE);
+
         featureList =new ArrayList<>();
         list = (RecyclerView) findViewById(R.id.recycle_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -69,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 Earthquake earthquakes = response.body();
 
                 featureList = earthquakes.getFeatures();
+                spinner.setVisibility(View.GONE);
                 adapter.setFeatureList(featureList);
 
 
