@@ -1,5 +1,6 @@
 package com.example.earthquake;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -34,11 +35,22 @@ public class EarthquakeDisplayActivity extends AppCompatActivity {
     List<Feature> featureList;
     private EarthQuakeAPI earthQuakeAPI;
     private ProgressBar spinner;
+    private Intent receivedIntent;
+    private String maxMag,minMag;
+    public static final String MAXMAG = "maxmag";
+    public static final String MINMAG = "minmag";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_earthquake_display);
+
+        receivedIntent = getIntent();
+        maxMag = receivedIntent.getStringExtra(MAXMAG);
+        minMag = receivedIntent.getStringExtra(MINMAG);
+
+
         spinner = (ProgressBar)findViewById(R.id.progress_loader);
         spinner.setVisibility(View.VISIBLE);
 
@@ -64,7 +76,7 @@ public class EarthquakeDisplayActivity extends AppCompatActivity {
                 .build();
 
         earthQuakeAPI = retrofit.create(EarthQuakeAPI.class);
-        Call<Earthquake> call = earthQuakeAPI.getEarthQuakes("geojson","4");
+        Call<Earthquake> call = earthQuakeAPI.getEarthQuakes("geojson",minMag,maxMag);
         call.enqueue(new Callback<Earthquake>() {
             @Override
             public void onResponse(Call<Earthquake> call, Response<Earthquake> response) {
