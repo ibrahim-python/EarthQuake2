@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
@@ -16,8 +17,11 @@ import com.example.earthquake.POJO.Feature;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -29,26 +33,35 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class EarthquakeDisplayActivity extends AppCompatActivity {
 
+    private static final String TAG = EarthquakeDisplayActivity.class.getSimpleName();
     private TextView textViewResult;
     private EathquakeAdapter adapter;
     private RecyclerView list;
     List<Feature> featureList;
     private EarthQuakeAPI earthQuakeAPI;
     private ProgressBar spinner;
-    private Intent receivedIntent;
-    private String maxMag,minMag;
-    public static final String MAXMAG = "maxmag";
-    public static final String MINMAG = "minmag";
+    public static final String EXTRA_MAX ="max";
+    public static final String EXTRA_MIN ="min";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_earthquake_display);
+        Intent receivedIntent = getIntent();
 
-        receivedIntent = getIntent();
-        maxMag = receivedIntent.getStringExtra(MAXMAG);
-        minMag = receivedIntent.getStringExtra(MINMAG);
+        String maxMag = receivedIntent.getStringExtra(EXTRA_MAX);
+        String minMag = receivedIntent.getStringExtra(EXTRA_MAX);
+
+        Log.v(TAG, maxMag);
+        String limit = "50";
+        Map<String,String> parameters = new HashMap<>();
+        parameters.put("format", "geojson");
+        parameters.put("minmagnitude", minMag);
+        parameters.put("maxmagnitude", maxMag);
+        parameters.put("limit", limit);
+
+
 
 
         spinner = (ProgressBar)findViewById(R.id.progress_loader);
@@ -61,22 +74,12 @@ public class EarthquakeDisplayActivity extends AppCompatActivity {
         adapter = new EathquakeAdapter(featureList, this);
         list.setAdapter(adapter);
 
-        Gson gson = new GsonBuilder().serializeNulls().create();
-
-        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-        loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .addInterceptor(loggingInterceptor)
-                .build();
-
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://earthquake.usgs.gov/fdsnws/event/1/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-
         earthQuakeAPI = retrofit.create(EarthQuakeAPI.class);
-        Call<Earthquake> call = earthQuakeAPI.getEarthQuakes("geojson",minMag,maxMag);
+        Call<Earthquake> call = earthQuakeAPI.getEarthQuakes(parameters);
         call.enqueue(new Callback<Earthquake>() {
             @Override
             public void onResponse(Call<Earthquake> call, Response<Earthquake> response) {

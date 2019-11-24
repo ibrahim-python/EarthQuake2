@@ -8,15 +8,15 @@
 
 
     <EditText
-        android:id="@+id/max_mag"
+        android:id="@+id/min_mag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="76dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="@string/max_mag"
-        android:inputType="textPersonName"
+        android:hint="@string/min_mag"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,19 +24,19 @@
 
 
     <EditText
-        android:id="@+id/min_mag"
+        android:id="@+id/max_mag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginTop="36dp"
         android:layout_marginEnd="8dp"
         android:ems="10"
-        android:hint="@string/min_mag"
-        android:inputType="textPersonName"
+        android:hint="@string/max_mag"
+        android:inputType="numberDecimal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/max_mag" />
+        app:layout_constraintTop_toBottomOf="@+id/min_mag" />
 
     <Button
         android:id="@+id/search_button1"

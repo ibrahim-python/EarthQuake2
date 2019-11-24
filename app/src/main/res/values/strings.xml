@@ -3,5 +3,9 @@
     <string name="max_mag">Maximum Magnitude</string>
     <string name="min_mag">Minimum Magnitude</string>
     <string name="search">Search</string>
+    <string name="earthquake_search">Search For Earthquakes</string>
+    <string name="earthquakes_list">Earthquakes List</string>
+
+
 
 </resources>

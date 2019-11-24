@@ -11,9 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".EarthquakeDisplayActivity"></activity>
+        <activity android:name=".EarthquakeDisplayActivity" android:label="@string/earthquakes_list"></activity>
 
-        <activity android:name=".EarthquakeSearchActivity">
+        <activity android:name=".EarthquakeSearchActivity" android:label="@string/earthquake_search">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
